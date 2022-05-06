@@ -19,7 +19,7 @@ jobs:
             - name: Bump version
               uses: ./
               with:
-                  version_file: VERSION
+                  trailer: skip-checks:true
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             # - run: npm publish
