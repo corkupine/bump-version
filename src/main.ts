@@ -13,7 +13,7 @@ import { inc } from 'semver'
 import { createAnnotations } from './createAnnotation'
 
 async function run() {
-    const trailer = core.getInput('trailer') || ''
+    const trailer = (core.getInput('trailer') || '').trim()
     const githubToken =
         core.getInput('github_token') || process.env.GITHUB_TOKEN
     const ignore =
@@ -89,6 +89,7 @@ async function run() {
     await createAnnotations({ githubToken, newVersion: tagMsg, linesReplaced })
     core.setOutput('version', newVersion)
     core.setOutput('prefix', prefix)
+    core.setOutput('trailer', trailer)
     core.info(`new version ${tagMsg}`)
 }
 
