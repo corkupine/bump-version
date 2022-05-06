@@ -13,6 +13,7 @@ import { inc } from 'semver'
 import { createAnnotations } from './createAnnotation'
 
 async function run() {
+    const trailer = core.getInput('trailer') || ''
     const githubToken =
         core.getInput('github_token') || process.env.GITHUB_TOKEN
     const ignore =
@@ -66,7 +67,9 @@ async function run() {
         linesReplaced = res.linesReplaced
     }
     const tagName = prefix ? prefix + '_' + newVersion : newVersion
-    const tagMsg = `${capitalize(prefix) + ' '}Version ${newVersion} [skip ci]`
+    
+    const tagMsg = trailer != '' ? `${capitalize(prefix) + ' '}Version ${newVersion}` 
+        : `${capitalize(prefix) + ' '}Version ${newVersion} [skip ci]`
 
     await commit({
         USER_EMAIL: 'bump-version@version.com',
@@ -76,6 +79,7 @@ async function run() {
         tagName,
         tagMsg,
         branch,
+        trailer,
     })
     await createTag({
         tagName,
